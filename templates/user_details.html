@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{user.username}} Details{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+<h1>{{user.username}} details</h1>
+<ul>
+    <li>First Name: {{user.first_name}}</li>
+    <li>Last Name: {{user.last_name}}</li>
+    <li>Email: {{user.email}}</li>
+</ul>
+
+<form action="/users/{{user.username}}/delete" method="POST">
+    <input type="submit" value="Delete User">
+</form>
+
+<h1>{{user.username}} feedback</h1>
+<ul>
+    {% for feedback in user.feedback %}
+    <li>
+        <b>{{feedback.title}}</b> {{feedback.content}}
+        {% if user.username == session['current_user'] %}
+        <a href="/feedback/{{feedback.id}}/update">Edit</a>
+        <form action="/feedback/{{feedback.id}}/delete" method="POST">
+            <input type="submit" value="Delete Feedback">
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+<form action="/users/{{user.username}}/feedback/add">
+    <input type="submit" value="Add Feedback">
+</form>
+
+<form action="/logout">
+    <input type="submit" value="Logout">
+</form>
+{% endblock %}

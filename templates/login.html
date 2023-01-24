@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+<h1>Login to your account</h1>
+<form method="POST">
+    {% for field in form if field.widget.input_type != 'hidden' %}
+    <p>
+        {{ form.hidden_tag() }}
+        {{field.label}}
+        {{field}}
+        {% for error in field.errors %}
+            {{error}}
+        {% endfor %}
+    </p>
+    {% endfor %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <input type="submit" value="Login">
+</form>
+
+<form action="/register">
+    <input type="submit" value="Register a user">
+</form>
+
+{% endblock %}
